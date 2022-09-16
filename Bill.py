@@ -1,7 +1,10 @@
+from ast import Delete
 from email.headerregistry import Group
 from textwrap import fill
 from tkinter import*
 from turtle import bgcolor, right
+import math,random
+from webbrowser import get
 class Bill_app:
     def __init__(self,root):
         self.root=root
@@ -25,6 +28,8 @@ class Bill_app:
         self.c_name=StringVar()
         self.c_mobile=StringVar()
         self.bill_no=StringVar()
+        x=random.randint(1000,99999)
+        self.bill_no.set(str(x))
         self.search_bill=StringVar()
 
 
@@ -84,20 +89,64 @@ class Bill_app:
         btn_F.place(x=750,width=580,height=105)
 
         total_btn=Button(btn_F,command=self.total,text="Total",bg="cadetblue",fg="white",pady=15,width=10,bd=2,font="arial 15 bold").grid(row=0,column=0,padx=5,pady=5 )
-        GBill_btn=Button(btn_F,text="Genrate Bill",bg="cadetblue",fg="white",pady=15,width=10,bd=2,font="arial 15 bold").grid(row=0,column=1,padx=5,pady=5 )
+        GBill_btn=Button(btn_F,text="Genrate Bill",command=self.bill_area,bg="cadetblue",fg="white",pady=15,width=10,bd=2,font="arial 15 bold").grid(row=0,column=1,padx=5,pady=5 )
         Clear_btn=Button(btn_F,text="Clear",bg="cadetblue",fg="white",pady=15,width=10,bd=2,font="arial 15 bold").grid(row=0,column=2,padx=5,pady=5 )
         Exit_btn=Button(btn_F,text="Exit",bg="cadetblue",fg="white",pady=15,width=10,bd=2,font="arial 15 bold").grid(row=0,column=3,padx=5,pady=5 )
-
+        self.welcome_bill()
 
     def total(self):
-        self.total_Itemdetail_price=(
-                                    (self.Chocolate_Tea.get()*10)+
-                                    (self.Rose_Tea.get()*10)+
-                                    (self.Elichi_Tea.get()*10)+
-                                    (self.Tea.get()*10)
-            )
-        self.Itemdetail_price.set(str(self.total_Itemdetail_price))
+        self.i_c_t=self.Chocolate_Tea.get()*10
+        self.i_r_t=self.Rose_Tea.get()*10
+        self.i_e_t=self.Elichi_Tea.get()*10
+        self.i_t=self.Tea.get()*10
+        
+        self.total_Itemdetail_price=float(
+                                    self.i_c_t+
+                                    self.i_r_t+
+                                    self.i_e_t+
+                                    self.i_t
 
-root=Tk()
+                                    
+            )
+        self.Itemdetail_price.set("Rs. "+str(self.total_Itemdetail_price))
+        self.c_tax=round((self.total_Itemdetail_price*0.05),2)
+        self.Itemdetail_tax.set("Rs. "+str(self.c_tax))
+
+        self.Total_bill=float(self.total_Itemdetail_price + self.c_tax)
+
+    def welcome_bill(self):
+        self.txtarea.delete('1.0',END)
+        self.txtarea.insert(END,"\tWelcome CSW Retail \n")
+        self.txtarea.insert(END,f"\n Bill Number: {self.bill_no.get()}")
+        self.txtarea.insert(END,f"\n Customer Name:{self.c_name.get()}")
+        self.txtarea.insert(END,f"\n Phone Number:{self.c_mobile.get()}")
+        self.txtarea.insert(END,f"\n___________________________________\n")
+        self.txtarea.insert(END,f"\n Item\t\tQTY\tPrice")
+        self.txtarea.insert(END,f"\n___________________________________\n")
+        
+    def bill_area(self):
+        self.welcome_bill()
+        #__________________________Item Bill___________________________
+        if self.Chocolate_Tea.get()!=0:
+                    self.txtarea.insert(END,f"\n Cho Tea\t\t{self.Chocolate_Tea.get()}\t\t{self.i_c_t}")
+
+        if self.Rose_Tea.get()!=0:
+                    self.txtarea.insert(END,f"\n Rose Tea\t\t{self.Rose_Tea.get()}\t\t{self.i_r_t}")
+
+        if self.Elichi_Tea.get()!=0:
+                    self.txtarea.insert(END,f"\n Elichi Tea\t\t{self.Elichi_Tea.get()}\t\t{self.i_e_t}")
+
+        if self.Tea.get()!=0:
+                    self.txtarea.insert(END,f"\n Tea\t\t{self.Tea.get()}\t\t{self.i_t}")
+
+
+        self.txtarea.insert(END,f"\n-----------------------------------\n")
+        if self.Itemdetail_tax.get()!="Rs. 0.0":
+            self.txtarea.insert(END,f"\n Item Tax\t\t\t{self.Itemdetail_tax.get()}")
+        self.txtarea.insert(END,f"\n-----------------------------------\n")
+        self.txtarea.insert(END,f"\n Total Bill:\t\t\t Rs. {self.Total_bill}")
+
+
+root= Tk()
 obj = Bill_app(root)
 root.mainloop()
