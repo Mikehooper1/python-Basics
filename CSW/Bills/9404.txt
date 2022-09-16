@@ -1,0 +1,17 @@
+	Welcome CSW Retail 
+
+ Bill Number: 9404
+ Customer Name:mike
+ Phone Number:7
+___________________________________
+
+ Item		QTY	Price
+___________________________________
+
+ Cho Tea		1		9.5
+-----------------------------------
+
+ Item Tax			Rs. 0.48
+-----------------------------------
+
+ Total Bill:			 Rs. 10
